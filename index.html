@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#1a0a2e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="大五人格養老">
+<meta name="description" content="大五人格養老需求評估問卷 - 高端養老服務匹配系統">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700&family=Ma+Shan+Zheng&family=ZCOOL+QingKe+HuangYou&display=swap" rel="stylesheet">
+<title>大五人格 · 高端養老評估</title>
+<style>
+  :root {
+    --ink: #1a0a2e;
+    --ink2: #2d1654;
+    --gold: #c9a84c;
+    --gold2: #e8c97a;
+    --jade: #4a8c6e;
+    --jade2: #6db894;
+    --crimson: #8b2635;
+    --parchment: #fdf8f0;
+    --cream: #f5ede0;
+    --mist: rgba(201,168,76,0.08);
+    --shadow: 0 8px 40px rgba(26,10,46,0.25);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'Noto Serif SC', serif;
+    background: var(--ink);
+    color: var(--parchment);
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    overflow-x: hidden;
+  }
+
+  /* Decorative background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse at 20% 20%, rgba(201,168,76,0.12) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(74,140,110,0.10) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, rgba(45,22,84,0.8) 0%, transparent 80%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .app {
+    position: relative;
+    z-index: 1;
+    max-width: 480px;
+    margin: 0 auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ─── SCREENS ─── */
+  .screen { display: none; padding: 24px 20px; flex: 1; animation: fadeIn 0.4s ease; }
+  .screen.active { display: flex; flex-direction: column; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ─── HEADER ─── */
+  .header {
+    text-align: center;
+    padding: 48px 20px 32px;
+    position: relative;
+  }
+  .header::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 20px auto 0;
+  }
+  .logo-text {
+    font-family: 'Ma Shan Zheng', serif;
+    font-size: 2.8rem;
+    color: var(--gold);
+    text-shadow: 0 0 40px rgba(201,168,76,0.4);
+    letter-spacing: 0.1em;
+    line-height: 1.2;
+  }
+  .logo-sub {
+    font-size: 0.85rem;
+    color: rgba(253,248,240,0.55);
+    margin-top: 8px;
+    letter-spacing: 0.25em;
+  }
+
+  /* ─── WELCOME ─── */
+  .welcome-card {
+    background: rgba(253,248,240,0.05);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin: 16px 0 24px;
+    backdrop-filter: blur(10px);
+  }
+  .welcome-card h2 {
+    font-size: 1.15rem;
+    color: var(--gold2);
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+  .welcome-card p {
+    font-size: 0.88rem;
+    line-height: 1.8;
+    color: rgba(253,248,240,0.75);
+  }
+  .trait-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+  }
+  .trait-pill {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    border: 1px solid;
+    letter-spacing: 0.05em;
+  }
+  .pill-o { border-color: #6b9fd4; color: #6b9fd4; background: rgba(107,159,212,0.1); }
+  .pill-c { border-color: var(--jade2); color: var(--jade2); background: rgba(109,184,148,0.1); }
+  .pill-e { border-color: #e8a85a; color: #e8a85a; background: rgba(232,168,90,0.1); }
+  .pill-a { border-color: #d98fa3; color: #d98fa3; background: rgba(217,143,163,0.1); }
+  .pill-n { border-color: #a585c8; color: #a585c8; background: rgba(165,133,200,0.1); }
+
+  /* ─── BUTTON ─── */
+  .btn-primary {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--gold) 0%, #a07830 100%);
+    border: none;
+    border-radius: 12px;
+    color: var(--ink);
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 20px rgba(201,168,76,0.35);
+    -webkit-appearance: none;
+  }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 28px rgba(201,168,76,0.45); }
+  .btn-primary:active { transform: translateY(1px); }
+  .btn-secondary {
+    background: transparent;
+    border: 1px solid rgba(201,168,76,0.4);
+    color: var(--gold2);
+    font-family: 'Noto Serif SC', serif;
+    font-size: 0.9rem;
+    padding: 12px 24px;
+    border-radius: 10px;
+    cursor: pointer;
+    letter-spacing: 0.1em;
+    transition: all 0.2s;
+    -webkit-appearance: none;
+  }
+  .btn-secondary:hover { background: rgba(201,168,76,0.08); }
+
+  /* ─── FORM ─── */
+  .section-title {
+    font-family: 'ZCOOL QingKe HuangYou', serif;
+    font-size: 1.3rem;
+    color: var(--gold);
+    margin-bottom: 20px;
+    text-align: center;
+    letter-spacing: 0.1em;
+  }
+  .form-group { margin-bottom: 20px; }
+  .form-label {
+    display: block;
+    font-size: 0.82rem;
+    color: rgba(253,248,240,0.6);
+    margin-bottom: 8px;
+    letter-spacing: 0.12em;
+  }
+  .form-input {
+    width: 100%;
+    padding: 13px 16px;
+    background: rgba(253,248,240,0.06);
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 10px;
+    color: var(--parchment);
+    font-family: 'Noto Serif SC', serif;
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .form-input:focus {
+    outline: none;
+    border-color: var(--gold);
+    background: rgba(201,168,76,0.06);
+  }
+  .form-input option { background: var(--ink2); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .radio-group { display: flex; gap: 12px; }
+  .radio-label {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 14px;
+    background: rgba(253,248,240,0.05);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+  }
+  .radio-label input { accent-color: var(--gold); width: 16px; height: 16px; }
+  .radio-label.selected { background: rgba(201,168,76,0.12); border-color: var(--gold); }
+
+  /* ─── PROGRESS ─── */
+  .progress-bar-wrap {
+    background: rgba(253,248,240,0.08);
+    border-radius: 4px;
+    height: 4px;
+    margin-bottom: 8px;
+    overflow: hidden;
+  }
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--jade2), var(--gold));
+    border-radius: 4px;
+    transition: width 0.4s ease;
+  }
+  .progress-text {
+    font-size: 0.75rem;
+    color: rgba(253,248,240,0.45);
+    text-align: right;
+    margin-bottom: 20px;
+    letter-spacing: 0.05em;
+  }
+
+  /* ─── QUESTIONS ─── */
+  .q-header {
+    margin-bottom: 24px;
+  }
+  .q-dimension {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    margin-bottom: 12px;
+    letter-spacing: 0.08em;
+  }
+  .q-text {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--parchment);
+  }
+
+  .scale-container { margin: 28px 0; }
+  .scale-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.72rem;
+    color: rgba(253,248,240,0.45);
+    margin-bottom: 16px;
+    letter-spacing: 0.05em;
+  }
+  .scale-options {
+    display: flex;
+    justify-content: space-between;
+    gap: 6px;
+  }
+  .scale-btn {
+    flex: 1;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 2px solid rgba(201,168,76,0.3);
+    background: transparent;
+    color: rgba(253,248,240,0.6);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -webkit-appearance: none;
+    min-width: 42px;
+    min-height: 42px;
+  }
+  .scale-btn:hover { border-color: var(--gold); color: var(--gold2); }
+  .scale-btn.selected {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--ink);
+    font-weight: 700;
+    transform: scale(1.12);
+    box-shadow: 0 4px 16px rgba(201,168,76,0.4);
+  }
+
+  .q-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+    gap: 12px;
+  }
+  .q-nav .btn-secondary { flex: 1; }
+  .q-nav .btn-primary { flex: 2; padding: 14px; }
+
+  /* ─── RESULTS ─── */
+  .result-header {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  .result-name {
+    font-family: 'ZCOOL QingKe HuangYou', serif;
+    font-size: 1.6rem;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+  }
+  .result-meta {
+    font-size: 0.8rem;
+    color: rgba(253,248,240,0.45);
+    margin-top: 6px;
+    letter-spacing: 0.08em;
+  }
+  .result-type-badge {
+    display: inline-block;
+    margin: 16px auto;
+    padding: 8px 24px;
+    background: linear-gradient(135deg, rgba(201,168,76,0.2), rgba(201,168,76,0.08));
+    border: 1px solid var(--gold);
+    border-radius: 30px;
+    font-size: 0.95rem;
+    color: var(--gold2);
+    letter-spacing: 0.12em;
+  }
+
+  .dimension-card {
+    background: rgba(253,248,240,0.04);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 14px;
+    border: 1px solid rgba(253,248,240,0.08);
+    position: relative;
+    overflow: hidden;
+  }
+  .dimension-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+  }
+  .d-o::before { background: #6b9fd4; }
+  .d-c::before { background: var(--jade2); }
+  .d-e::before { background: #e8a85a; }
+  .d-a::before { background: #d98fa3; }
+  .d-n::before { background: #a585c8; }
+
+  .dim-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .dim-name { font-size: 0.95rem; font-weight: 600; letter-spacing: 0.08em; }
+  .dim-score {
+    font-family: 'Ma Shan Zheng', serif;
+    font-size: 1.5rem;
+  }
+  .d-o .dim-score { color: #6b9fd4; }
+  .d-c .dim-score { color: var(--jade2); }
+  .d-e .dim-score { color: #e8a85a; }
+  .d-a .dim-score { color: #d98fa3; }
+  .d-n .dim-score { color: #a585c8; }
+
+  .bar-track {
+    background: rgba(253,248,240,0.08);
+    border-radius: 4px;
+    height: 6px;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 1s cubic-bezier(.4,0,.2,1);
+  }
+  .d-o .bar-fill { background: linear-gradient(90deg, #3a6fa0, #6b9fd4); }
+  .d-c .bar-fill { background: linear-gradient(90deg, var(--jade), var(--jade2)); }
+  .d-e .bar-fill { background: linear-gradient(90deg, #c07828, #e8a85a); }
+  .d-a .bar-fill { background: linear-gradient(90deg, #b06880, #d98fa3); }
+  .d-n .bar-fill { background: linear-gradient(90deg, #7055a8, #a585c8); }
+
+  .dim-label {
+    font-size: 0.78rem;
+    color: rgba(253,248,240,0.5);
+    letter-spacing: 0.05em;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .insight-card {
+    background: rgba(201,168,76,0.06);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 14px;
+  }
+  .insight-title {
+    font-size: 0.82rem;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .insight-title::before {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 1px;
+    background: var(--gold);
+  }
+  .insight-item {
+    font-size: 0.87rem;
+    line-height: 1.75;
+    color: rgba(253,248,240,0.8);
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(253,248,240,0.06);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .insight-item:last-child { border-bottom: none; }
+  .insight-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gold2);
+    margin-top: 7px;
+    flex-shrink: 0;
+  }
+
+  .priority-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    margin-top: 12px;
+  }
+  .priority-A { background: rgba(201,168,76,0.2); color: var(--gold2); border: 1px solid var(--gold); }
+  .priority-B { background: rgba(74,140,110,0.15); color: var(--jade2); border: 1px solid var(--jade2); }
+  .priority-C { background: rgba(107,159,212,0.12); color: #6b9fd4; border: 1px solid #6b9fd4; }
+  .priority-D { background: rgba(165,133,200,0.12); color: #a585c8; border: 1px solid #a585c8; }
+
+  .btn-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 24px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+  .btn-group .btn-primary { flex: 2; }
+  .btn-group .btn-secondary { flex: 1; }
+
+  /* ─── DIVIDER ─── */
+  .ornamental-divider {
+    text-align: center;
+    margin: 20px 0;
+    color: rgba(201,168,76,0.35);
+    font-size: 1.1rem;
+    letter-spacing: 0.5em;
+  }
+
+  /* ─── LOADING ─── */
+  .loading-screen {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+  .spinner {
+    width: 50px;
+    height: 50px;
+    border: 2px solid rgba(201,168,76,0.2);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-text { font-size: 0.9rem; color: rgba(253,248,240,0.5); letter-spacing: 0.2em; }
+
+  /* ─── SAFE AREA ─── */
+  .safe-bottom { padding-bottom: max(16px, env(safe-area-inset-bottom)); }
+  .safe-top { padding-top: max(0px, env(safe-area-inset-top)); }
+
+  /* ─── SCROLLABLE ─── */
+  .scrollable { overflow-y: auto; -webkit-overflow-scrolling: touch; }
+
+  /* Install prompt */
+  .install-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(135deg, var(--ink2), var(--ink));
+    border-top: 1px solid rgba(201,168,76,0.3);
+    padding: 16px 20px;
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+    display: none;
+    align-items: center;
+    gap: 12px;
+    z-index: 100;
+    animation: slideUp 0.3s ease;
+  }
+  @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+  .install-banner.visible { display: flex; }
+  .install-banner p { flex: 1; font-size: 0.82rem; color: rgba(253,248,240,0.7); line-height: 1.4; }
+  .install-btn { padding: 8px 16px; background: var(--gold); color: var(--ink); border: none; border-radius: 8px; font-size: 0.82rem; font-weight: 700; cursor: pointer; white-space: nowrap; }
+  .install-close { background: none; border: none; color: rgba(253,248,240,0.4); font-size: 1.2rem; cursor: pointer; padding: 4px; }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ══════════════ WELCOME SCREEN ══════════════ -->
+  <div class="screen active" id="screen-welcome">
+    <div class="header safe-top">
+      <div class="logo-text">大五人格</div>
+      <div class="logo-text" style="font-size:1.6rem; color: var(--gold2);">高端養老評估</div>
+      <div class="logo-sub">Big Five Personality · Senior Living Assessment</div>
+    </div>
+
+    <div class="welcome-card">
+      <h2>🏮 評估說明</h2>
+      <p>本問卷基於國際權威大五人格（BFI-10）模型，結合高端養老服務場景，為您量身分析養老需求偏好與消費行為特征，精準匹配高端養老會員服務。</p>
+      <div class="trait-pills">
+        <span class="trait-pill pill-o">開放性 Openness</span>
+        <span class="trait-pill pill-c">盡責性 Conscientiousness</span>
+        <span class="trait-pill pill-e">外向性 Extraversion</span>
+        <span class="trait-pill pill-a">宜人性 Agreeableness</span>
+        <span class="trait-pill pill-n">情緒穩定性 Neuroticism</span>
+      </div>
+    </div>
+
+    <div class="welcome-card" style="margin-bottom: 28px;">
+      <h2>📋 問卷資訊</h2>
+      <p>共 <strong style="color:var(--gold2)">10</strong> 道題，約 <strong style="color:var(--gold2)">3-5</strong> 分鐘完成。每題請在 1-5 分量表上評分：<br><br>
+      <strong style="color:var(--gold2)">1</strong> = 非常不符合 &nbsp;│&nbsp; <strong style="color:var(--gold2)">5</strong> = 非常符合</p>
+    </div>
+
+    <div style="margin-top: auto;">
+      <button class="btn-primary" onclick="showScreen('screen-info')">開始填寫問卷 →</button>
+    </div>
+
+    <div class="safe-bottom"></div>
+  </div>
+
+  <!-- ══════════════ INFO SCREEN ══════════════ -->
+  <div class="screen" id="screen-info">
+    <div style="margin-bottom: 8px; padding-top: max(0px, env(safe-area-inset-top));">
+      <div class="section-title">基本資料</div>
+    </div>
+
+    <div style="flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;">
+      <div class="form-group">
+        <label class="form-label">姓名</label>
+        <input type="text" class="form-input" id="f-name" placeholder="請輸入您的姓名">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">性別</label>
+          <select class="form-input" id="f-gender">
+            <option value="">請選擇</option>
+            <option value="male">男性</option>
+            <option value="female">女性</option>
+            <option value="other">其他</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">生日（yyyy-mm-dd）</label>
+          <input type="date" class="form-input" id="f-birthday" placeholder="yyyy-mm-dd">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">婚姻狀況</label>
+        <div class="radio-group">
+          <label class="radio-label" id="marital-1" onclick="selectMarital('married')">
+            <input type="radio" name="marital" value="married"> 1. 已婚
+          </label>
+          <label class="radio-label" id="marital-2" onclick="selectMarital('single')">
+            <input type="radio" name="marital" value="single"> 2. 未婚
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="ornamental-divider">✦ ✦ ✦</div>
+
+    <div style="display: flex; gap: 12px; padding-bottom: max(16px, env(safe-area-inset-bottom));">
+      <button class="btn-secondary" onclick="showScreen('screen-welcome')">← 返回</button>
+      <button class="btn-primary" onclick="validateInfo()">下一步 →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════ QUESTION SCREEN ══════════════ -->
+  <div class="screen" id="screen-questions">
+    <div style="padding-top: max(8px, env(safe-area-inset-top));">
+      <div class="progress-bar-wrap">
+        <div class="progress-bar" id="progress-bar" style="width: 10%"></div>
+      </div>
+      <div class="progress-text" id="progress-text">第 1 題 / 共 10 題</div>
+    </div>
+
+    <div class="q-header">
+      <div class="q-dimension" id="q-dimension"></div>
+      <div class="q-text" id="q-text"></div>
+    </div>
+
+    <div class="scale-container">
+      <div class="scale-labels">
+        <span>非常不符合</span>
+        <span>非常符合</span>
+      </div>
+      <div class="scale-options" id="scale-options">
+        <button class="scale-btn" onclick="selectScale(1)">1</button>
+        <button class="scale-btn" onclick="selectScale(2)">2</button>
+        <button class="scale-btn" onclick="selectScale(3)">3</button>
+        <button class="scale-btn" onclick="selectScale(4)">4</button>
+        <button class="scale-btn" onclick="selectScale(5)">5</button>
+      </div>
+    </div>
+
+    <div style="flex: 1;"></div>
+
+    <div class="q-nav safe-bottom">
+      <button class="btn-secondary" onclick="prevQuestion()">← 上題</button>
+      <button class="btn-primary" id="btn-next" onclick="nextQuestion()">下一題 →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════ LOADING SCREEN ══════════════ -->
+  <div class="screen" id="screen-loading">
+    <div class="loading-screen safe-top safe-bottom">
+      <div style="font-family: 'Ma Shan Zheng'; font-size: 3rem; color: var(--gold); text-shadow: 0 0 40px rgba(201,168,76,0.5);">易</div>
+      <div class="spinner"></div>
+      <div class="loading-text">正在分析您的人格特征……</div>
+    </div>
+  </div>
+
+  <!-- ══════════════ RESULTS SCREEN ══════════════ -->
+  <div class="screen scrollable" id="screen-results" style="padding-top: max(20px, env(safe-area-inset-top));">
+    <div class="result-header">
+      <div class="result-name" id="res-name">—</div>
+      <div class="result-meta" id="res-meta">—</div>
+      <div class="result-type-badge" id="res-type">—</div>
+    </div>
+
+    <div class="ornamental-divider">✦ 人格維度分析 ✦</div>
+
+    <div id="res-dimensions"></div>
+
+    <div class="ornamental-divider">✦ 養老需求畫像 ✦</div>
+
+    <div class="insight-card" id="res-needs"></div>
+    <div class="insight-card" id="res-consumption"></div>
+    <div class="insight-card" id="res-services"></div>
+
+    <div class="ornamental-divider">✦ 會員適配評級 ✦</div>
+    <div class="insight-card" id="res-membership"></div>
+
+    <div class="btn-group safe-bottom">
+      <button class="btn-primary" onclick="shareResult()">📤 分享結果</button>
+      <button class="btn-secondary" onclick="restartQuiz()">重新填寫</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Install Banner -->
+<div class="install-banner" id="install-banner">
+  <p>📲 安裝到主螢幕<br>方便隨時查看養老評估</p>
+  <button class="install-btn" id="install-btn" onclick="installPWA()">安裝</button>
+  <button class="install-close" onclick="closeInstallBanner()">✕</button>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════
+// DATA: BFI-10 Questions (Rammstedt & John, 2007)
+// ═══════════════════════════════════════════════════
+const QUESTIONS = [
+  {
+    id: 1, dimension: 'E', reversed: false,
+    dimLabel: '外向性 Extraversion',
+    dimClass: 'pill-e',
+    text: '我認為自己是一個活潑、外向的人。'
+  },
+  {
+    id: 2, dimension: 'A', reversed: true,
+    dimLabel: '宜人性 Agreeableness',
+    dimClass: 'pill-a',
+    text: '我認為自己傾向於挑剔別人的缺點。（反向題）'
+  },
+  {
+    id: 3, dimension: 'C', reversed: false,
+    dimLabel: '盡責性 Conscientiousness',
+    dimClass: 'pill-c',
+    text: '我認為自己是一個做事徹底、可靠的人。'
+  },
+  {
+    id: 4, dimension: 'N', reversed: true,
+    dimLabel: '情緒穩定性 Neuroticism',
+    dimClass: 'pill-n',
+    text: '我認為自己是一個放鬆、能應對壓力的人。（反向題）'
+  },
+  {
+    id: 5, dimension: 'O', reversed: false,
+    dimLabel: '開放性 Openness',
+    dimClass: 'pill-o',
+    text: '我認為自己有豐富的想像力，是一個有創意的人。'
+  },
+  {
+    id: 6, dimension: 'E', reversed: true,
+    dimLabel: '外向性 Extraversion',
+    dimClass: 'pill-e',
+    text: '我認為自己比較內斂、安靜。（反向題）'
+  },
+  {
+    id: 7, dimension: 'A', reversed: false,
+    dimLabel: '宜人性 Agreeableness',
+    dimClass: 'pill-a',
+    text: '我認為自己總體上信任他人，樂於助人。'
+  },
+  {
+    id: 8, dimension: 'C', reversed: true,
+    dimLabel: '盡責性 Conscientiousness',
+    dimClass: 'pill-c',
+    text: '我認為自己有時會粗心大意，缺乏條理。（反向題）'
+  },
+  {
+    id: 9, dimension: 'N', reversed: false,
+    dimLabel: '情緒穩定性 Neuroticism',
+    dimClass: 'pill-n',
+    text: '我認為自己容易緊張、焦慮，情緒起伏較大。'
+  },
+  {
+    id: 10, dimension: 'O', reversed: true,
+    dimLabel: '開放性 Openness',
+    dimClass: 'pill-o',
+    text: '我認為自己對藝術、音樂和文學興趣一般，不太有想像力。（反向題）'
+  }
+];
+
+// ═══════════════════════════════════════════════════
+// BIG FIVE → ELDERLY CARE TRAITS DATABASE
+// ═══════════════════════════════════════════════════
+const DIMENSION_INFO = {
+  O: {
+    name: '開放性',
+    fullName: '開放性 (Openness)',
+    high: {
+      label: '高開放型',
+      core: '愛新鮮、愛學習、思想開放、想象力豐富',
+      need: '精神充實、生活多樣、拒絕枯燥、願意嘗試新事物',
+      consumption: '文化旅遊、興趣課程、智能產品、文創、體驗類消費',
+      behavior: '願為體驗付費，接受新事物快，決策較快'
+    },
+    low: {
+      label: '低開放型',
+      core: '傳統、務實、求安穩、不喜變化、重視習慣',
+      need: '穩定安全、熟悉環境、規律生活、簡單省心',
+      consumption: '日用品、老品牌、家常休閒、熟人推薦',
+      behavior: '只買熟悉可靠產品，抗拒新科技，消費謹慎'
+    }
+  },
+  C: {
+    name: '盡責性',
+    fullName: '盡責性 (Conscientiousness)',
+    high: {
+      label: '高盡責型',
+      core: '自律、有條理、重健康、愛規劃、責任心強',
+      need: '健康管理、生活秩序、財務安全、規範可靠',
+      consumption: '體檢養生、健康食品、收納家居、正規專業服務',
+      behavior: '理性消費，重資質品質，願為健康與安心付費'
+    },
+    low: {
+      label: '低盡責型',
+      core: '隨性、自由、不愛約束、隨遇而安、不喜細節',
+      need: '無壓力、簡單省事、少麻煩、不折騰',
+      consumption: '便捷用品、休閒娛樂、懶人好物、輕鬆服務',
+      behavior: '討厭複雜操作，追求方便舒適，決策隨意'
+    }
+  },
+  E: {
+    name: '外向性',
+    fullName: '外向性 (Extraversion)',
+    high: {
+      label: '高外向型',
+      core: '愛社交、熱鬧、活躍、熱情、喜歡陪伴',
+      need: '豐富社交、集體活動、被認可、有事可做',
+      consumption: '群體活動、團體旅遊、社交穿搭、聚餐聚會',
+      behavior: '易受同伴影響，喜歡跟風團購，愛熱鬧消費'
+    },
+    low: {
+      label: '低外向型（內向）',
+      core: '內向、喜獨處、內斂、怕吵鬧',
+      need: '私密安靜、獨處空間、溫和簡單人際關係',
+      consumption: '閱讀、養花、居家休閒、安靜環境',
+      behavior: '低調不張揚，反感過度推銷，重視舒適與隱私'
+    }
+  },
+  A: {
+    name: '宜人性',
+    fullName: '宜人性 (Agreeableness)',
+    high: {
+      label: '高宜人型',
+      core: '友善、體貼、重家庭、樂於助人、不愛衝突',
+      need: '親情陪伴、友善環境、被尊重照顧、氛圍和睦',
+      consumption: '家庭用品、孫輩禮物、貼心服務、實惠好物',
+      behavior: '信任口碑與熟人，吃軟不吃硬，重人情味'
+    },
+    low: {
+      label: '低宜人型（獨立）',
+      core: '獨立、理性、有主見、講事實、不喜依賴',
+      need: '自主獨立、規則清晰、不被控制、高效透明',
+      consumption: '高性價比、專業服務、透明收費、實用產品',
+      behavior: '重邏輯條款，不吃情感營銷，決策冷靜獨立'
+    }
+  },
+  N: {
+    name: '情緒穩定性',
+    fullName: '情緒穩定性 (Neuroticism)',
+    high: {
+      label: '高情緒敏感型',
+      core: '易焦慮、敏感、多慮、在意健康與安全',
+      need: '心理安全感、醫療就近、應急保障、穩定可預期',
+      consumption: '保險、監控設備、大品牌、有保障產品',
+      behavior: '對安全風險敏感，願意花錢買放心、求穩妥'
+    },
+    low: {
+      label: '高情緒穩定型',
+      core: '淡定、樂觀、豁達、心態平和、抗壓強',
+      need: '自在、心態舒暢、簡單快樂、無壓力',
+      consumption: '休閒放鬆、自然健康、佛系生活、簡約消費',
+      behavior: '不焦慮囤貨，不過度計較，心態平和，理性佛系'
+    }
+  }
+};
+
+const PERSONALITY_TYPES = [
+  {
+    id: 'achiever',
+    name: '尊崇自信成就型',
+    priority: 'A',
+    desc: '具備強控制力、重體面、目標導向，是高端養老會員制的核心客群',
+    match: (s) => s.E >= 3.5 && s.C >= 3.5 && s.A <= 3.0
+  },
+  {
+    id: 'conscientious-stable',
+    name: '尽責穩健型',
+    priority: 'A',
+    desc: '自律規劃、重秩序、求安穩，傾向長期主義，為確定性買單',
+    match: (s) => s.C >= 3.5 && s.N <= 3.0
+  },
+  {
+    id: 'social-vibrant',
+    name: '社交活力型',
+    priority: 'B',
+    desc: '熱愛社交、活力充沛、重人脈，是社群活動的核心發起者',
+    match: (s) => s.E >= 3.5 && s.A >= 3.5
+  },
+  {
+    id: 'rational-independent',
+    name: '理性自主型',
+    priority: 'B',
+    desc: '獨立思考、重隱私、講效率，為專業度與隱私感付費',
+    match: (s) => s.A <= 2.8 && s.C >= 3.5
+  },
+  {
+    id: 'open-explorer',
+    name: '開放探索型',
+    priority: 'B',
+    desc: '接受新事物、愛學習、求新鮮，願意為體驗與興趣付費',
+    match: (s) => s.O >= 3.5
+  },
+  {
+    id: 'gentle-warmth',
+    name: '溫和宜人型',
+    priority: 'C',
+    desc: '友善溫和、重陪伴、求和諧，以家庭情感為消費核心驅動',
+    match: (s) => s.A >= 3.5 && s.E <= 3.0
+  },
+  {
+    id: 'sensitive-cautious',
+    name: '情緒敏感型',
+    priority: 'C',
+    desc: '易焦慮、高敏感、求安穩，重基礎安全感與穩定服務',
+    match: (s) => s.N >= 3.5
+  },
+  {
+    id: 'frugal-conservative',
+    name: '務實節儉型',
+    priority: 'D',
+    desc: '務實節儉、重性價比、喜傳統，對高端會員制門檻較高',
+    match: (s) => s.O <= 2.5 && s.C >= 3.5 && s.E <= 2.8
+  }
+];
+
+const MEMBERSHIP_INFO = {
+  A: { label: 'A級核心客群', color: 'priority-A', desc: '高端養老會員制主力付費者，直接對應體面、掌控、省心需求，轉化率最高。建議提供保證金制會員、管家式服務、標準化流程方案。' },
+  B: { label: 'B級高潛力客群', color: 'priority-B', desc: '側重隱私、體驗、細節，適合通過高端體驗課或試住活動轉化，具備高消費潛力。' },
+  C: { label: 'C級可轉化客群', color: 'priority-C', desc: '側重家庭、情感、創新，適合以興趣愛好和家庭活動為切入點，需一定時間培育信任。' },
+  D: { label: 'D級慎選客群', color: 'priority-D', desc: '對價格敏感或不喜社交，難以接受高門檻會員制，轉化成本極高，建議提供基礎護理套餐替代方案。' }
+};
+
+// ═══════════════════════════════════════════════════
+// APP STATE
+// ═══════════════════════════════════════════════════
+let state = {
+  currentQuestion: 0,
+  answers: {},
+  userInfo: {},
+  marital: ''
+};
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function selectMarital(val) {
+  state.marital = val;
+  document.getElementById('marital-1').classList.toggle('selected', val === 'married');
+  document.getElementById('marital-2').classList.toggle('selected', val === 'single');
+}
+
+function validateInfo() {
+  const name = document.getElementById('f-name').value.trim();
+  const gender = document.getElementById('f-gender').value;
+  const birthday = document.getElementById('f-birthday').value;
+  if (!name) { alert('請輸入姓名'); return; }
+  if (!gender) { alert('請選擇性別'); return; }
+  if (!state.marital) { alert('請選擇婚姻狀況'); return; }
+  state.userInfo = { name, gender, birthday, marital: state.marital };
+  state.currentQuestion = 0;
+  state.answers = {};
+  renderQuestion();
+  showScreen('screen-questions');
+}
+
+function renderQuestion() {
+  const q = QUESTIONS[state.currentQuestion];
+  const pct = ((state.currentQuestion) / QUESTIONS.length * 100).toFixed(0);
+  document.getElementById('progress-bar').style.width = Math.max(pct, 5) + '%';
+  document.getElementById('progress-text').textContent = `第 ${state.currentQuestion + 1} 題 / 共 ${QUESTIONS.length} 題`;
+
+  const dimEl = document.getElementById('q-dimension');
+  dimEl.textContent = q.dimLabel;
+  dimEl.className = `q-dimension ${q.dimClass}`;
+  dimEl.style.background = 'rgba(255,255,255,0.05)';
+  dimEl.style.border = '1px solid currentColor';
+
+  document.getElementById('q-text').textContent = q.text;
+
+  // Reset scale buttons
+  document.querySelectorAll('.scale-btn').forEach((btn, i) => {
+    btn.classList.toggle('selected', state.answers[q.id] === (i + 1));
+  });
+
+  const isLast = state.currentQuestion === QUESTIONS.length - 1;
+  document.getElementById('btn-next').textContent = isLast ? '提交問卷 ✓' : '下一題 →';
+  document.querySelector('.q-nav .btn-secondary').style.visibility = state.currentQuestion === 0 ? 'hidden' : 'visible';
+}
+
+function selectScale(val) {
+  const q = QUESTIONS[state.currentQuestion];
+  state.answers[q.id] = val;
+  document.querySelectorAll('.scale-btn').forEach((btn, i) => {
+    btn.classList.toggle('selected', i + 1 === val);
+  });
+}
+
+function nextQuestion() {
+  const q = QUESTIONS[state.currentQuestion];
+  if (!state.answers[q.id]) { 
+    // Shake animation hint
+    const so = document.getElementById('scale-options');
+    so.style.transform = 'translateX(-8px)';
+    setTimeout(() => so.style.transform = 'translateX(8px)', 100);
+    setTimeout(() => so.style.transform = 'translateX(-5px)', 200);
+    setTimeout(() => so.style.transform = '', 300);
+    alert('請選擇一個選項'); 
+    return; 
+  }
+  if (state.currentQuestion < QUESTIONS.length - 1) {
+    state.currentQuestion++;
+    renderQuestion();
+  } else {
+    calculateResults();
+  }
+}
+
+function prevQuestion() {
+  if (state.currentQuestion > 0) {
+    state.currentQuestion--;
+    renderQuestion();
+  }
+}
+
+// ═══════════════════════════════════════════════════
+// CALCULATION
+// ═══════════════════════════════════════════════════
+function calculateResults() {
+  showScreen('screen-loading');
+  setTimeout(() => {
+    const scores = { O: 0, C: 0, E: 0, A: 0, N: 0 };
+    const counts = { O: 0, C: 0, E: 0, A: 0, N: 0 };
+
+    QUESTIONS.forEach(q => {
+      let val = state.answers[q.id] || 3;
+      if (q.reversed) val = 6 - val;
+      scores[q.dimension] += val;
+      counts[q.dimension]++;
+    });
+
+    const avg = {};
+    ['O','C','E','A','N'].forEach(d => {
+      avg[d] = scores[d] / counts[d];
+    });
+
+    // Find personality type
+    let matched = null;
+    for (const type of PERSONALITY_TYPES) {
+      if (type.match(avg)) { matched = type; break; }
+    }
+    if (!matched) matched = PERSONALITY_TYPES[4]; // default
+
+    renderResults(avg, matched);
+    showScreen('screen-results');
+  }, 1800);
+}
+
+function renderResults(scores, pType) {
+  const info = state.userInfo;
+  const genderMap = { male: '男', female: '女', other: '其他' };
+  const maritalMap = { married: '已婚', single: '未婚' };
+
+  document.getElementById('res-name').textContent = info.name;
+  
+  let agePart = '';
+  if (info.birthday) {
+    const age = Math.floor((new Date() - new Date(info.birthday)) / 31557600000);
+    agePart = ` · ${age}歲`;
+  }
+  document.getElementById('res-meta').textContent = 
+    `${genderMap[info.gender] || ''}${agePart} · ${maritalMap[info.marital] || ''} · ${new Date().toLocaleDateString('zh-TW')}`;
+
+  document.getElementById('res-type').textContent = `🏮 ${pType.name}`;
+
+  // Dimension cards
+  const dimOrder = ['O','C','E','A','N'];
+  const dimClasses = { O: 'd-o', C: 'd-c', E: 'd-e', A: 'd-a', N: 'd-n' };
+  let dimHTML = '';
+  dimOrder.forEach(d => {
+    const info = DIMENSION_INFO[d];
+    const score = scores[d];
+    const isHigh = score >= 3.0;
+    const pct = ((score - 1) / 4 * 100).toFixed(0);
+    const detail = isHigh ? info.high : info.low;
+    dimHTML += `
+      <div class="dimension-card ${dimClasses[d]}">
+        <div class="dim-top">
+          <div class="dim-name">${info.fullName}</div>
+          <div class="dim-score">${score.toFixed(1)}</div>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div>
+        <div class="dim-label">
+          <span>${detail.label}</span>
+          <span>${pct}%</span>
+        </div>
+      </div>`;
+  });
+  document.getElementById('res-dimensions').innerHTML = dimHTML;
+
+  // Core needs analysis
+  const topDims = dimOrder.map(d => ({d, s: scores[d]}))
+    .sort((a,b) => Math.abs(b.s - 3) - Math.abs(a.s - 3));
+
+  let needsItems = '';
+  let consumptionItems = '';
+  let servicesItems = '';
+
+  dimOrder.forEach(d => {
+    const info = DIMENSION_INFO[d];
+    const isHigh = scores[d] >= 3.0;
+    const detail = isHigh ? info.high : info.low;
+    
+    needsItems += `<div class="insight-item"><div class="insight-dot"></div><div><strong>${info.name}：</strong>${detail.need}</div></div>`;
+    consumptionItems += `<div class="insight-item"><div class="insight-dot"></div><div><strong>${info.name}：</strong>${detail.consumption}</div></div>`;
+    servicesItems += `<div class="insight-item"><div class="insight-dot"></div><div><strong>${info.name}行為特征：</strong>${detail.behavior}</div></div>`;
+  });
+
+  document.getElementById('res-needs').innerHTML = `<div class="insight-title">養老核心需求</div>${needsItems}`;
+  document.getElementById('res-consumption').innerHTML = `<div class="insight-title">消費喜好偏向</div>${consumptionItems}`;
+  document.getElementById('res-services').innerHTML = `<div class="insight-title">消費行為特征</div>${servicesItems}`;
+
+  // Membership
+  const mem = MEMBERSHIP_INFO[pType.priority];
+  document.getElementById('res-membership').innerHTML = `
+    <div class="insight-title">高端養老會員適配</div>
+    <div class="insight-item"><div class="insight-dot"></div><div>${pType.desc}</div></div>
+    <div class="insight-item"><div class="insight-dot"></div><div>${mem.desc}</div></div>
+    <span class="priority-badge ${mem.color}">${mem.label}</span>
+  `;
+
+  // Trigger bar animations
+  setTimeout(() => {
+    document.querySelectorAll('.bar-fill').forEach(bar => {
+      const w = bar.style.width;
+      bar.style.width = '0%';
+      setTimeout(() => bar.style.width = w, 50);
+    });
+  }, 100);
+}
+
+function restartQuiz() {
+  state = { currentQuestion: 0, answers: {}, userInfo: {}, marital: '' };
+  document.getElementById('f-name').value = '';
+  document.getElementById('f-gender').value = '';
+  document.getElementById('f-birthday').value = '';
+  document.getElementById('marital-1').classList.remove('selected');
+  document.getElementById('marital-2').classList.remove('selected');
+  showScreen('screen-welcome');
+}
+
+function shareResult() {
+  const name = state.userInfo.name || '用戶';
+  const typeEl = document.getElementById('res-type');
+  const text = `【大五人格高端養老評估】\n${name}的人格類型：${typeEl.textContent}\n\n立即體驗：https://jp169zx-gh.github.io/big5/`;
+  if (navigator.share) {
+    navigator.share({ title: '大五人格養老評估結果', text });
+  } else {
+    navigator.clipboard?.writeText(text).then(() => alert('結果已複製到剪貼板！'));
+  }
+}
+
+// ═══════════════════════════════════════════════════
+// PWA / SERVICE WORKER
+// ═══════════════════════════════════════════════════
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  setTimeout(() => {
+    document.getElementById('install-banner').classList.add('visible');
+  }, 3000);
+});
+
+function installPWA() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(() => {
+      deferredPrompt = null;
+      closeInstallBanner();
+    });
+  }
+}
+
+function closeInstallBanner() {
+  document.getElementById('install-banner').classList.remove('visible');
+}
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
+}
+</script>
+</body>
+</html>
