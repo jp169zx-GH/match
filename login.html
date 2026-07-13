@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#5C3317">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>登入 — 高端養老客群人格匹配系統</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="auth-guard.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700&family=Cinzel:wght@400;600&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #faf6f0;
+    color: #1e1b4b;
+    font-family: 'Noto Serif SC', serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .login-wrap { max-width: 360px; width: 100%; }
+
+  .header {
+    text-align: center;
+    padding: 28px 20px 24px;
+    background: linear-gradient(135deg, #3B1F0A 0%, #7B4F2E 50%, #A0622A 100%);
+    border-radius: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 8px 32px rgba(123,79,46,0.25);
+  }
+  .header-emblem { font-size: 2.6rem; margin-bottom: 6px; }
+  .header h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 1rem;
+    color: rgba(255,255,255,0.85);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  .header h2 { font-size: 1.2rem; font-weight: 600; color: #ffffff; margin-top: 6px; }
+
+  .card {
+    background: #ffffff;
+    border: 1px solid rgba(123,79,46,0.12);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(123,79,46,0.08), 0 1px 4px rgba(0,0,0,0.06);
+  }
+
+  .card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #7B4F2E;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+  label { font-size: 0.78rem; color: #6b7280; letter-spacing: 0.5px; }
+  input {
+    background: #f9fafb;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: #1e1b4b;
+    font-family: 'Noto Serif SC', serif;
+    font-size: 0.9rem;
+    width: 100%;
+  }
+  input:focus { outline: none; border-color: #7B4F2E; box-shadow: 0 0 0 3px rgba(123,79,46,0.1); }
+
+  .btn {
+    width: 100%;
+    padding: 13px;
+    border-radius: 12px;
+    border: none;
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    background: linear-gradient(135deg, #7B4F2E, #A0622A);
+    color: #ffffff;
+    box-shadow: 0 4px 20px rgba(123,79,46,0.35);
+    margin-top: 4px;
+  }
+  .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .alert {
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    margin-bottom: 12px;
+    display: none;
+    background: #fef2f2;
+    border: 1px solid #fca5a5;
+    color: #dc2626;
+  }
+  .alert.show { display: block; }
+
+  .hint { font-size: 0.72rem; color: #9ca3af; text-align: center; margin-top: 14px; }
+</style>
+</head>
+<body>
+<div class="login-wrap">
+  <div class="header">
+    <div class="header-emblem">⭐</div>
+    <h1>Personality & Stars Matching</h1>
+    <h2>高端養老客群人格匹配系統</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span>🔒</span> 登入</div>
+    <div class="alert" id="loginError">帳號或密碼錯誤，請重新輸入</div>
+
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="loginEmail" placeholder="請輸入 Email" autocomplete="username">
+    </div>
+    <div class="form-group">
+      <label>密碼</label>
+      <input type="password" id="loginPassword" placeholder="請輸入密碼" autocomplete="current-password">
+    </div>
+    <button class="btn" id="loginBtn" onclick="handleLogin()">登入</button>
+  </div>
+
+  <p class="hint">帳號由管理員建立，如需開通請聯繫系統管理員</p>
+</div>
+
+<script>
+async function handleLogin() {
+  const btn = document.getElementById('loginBtn');
+  const errorBox = document.getElementById('loginError');
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+
+  errorBox.classList.remove('show');
+
+  if (!email || !password) {
+    errorBox.textContent = '請輸入 Email 與密碼';
+    errorBox.classList.add('show');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = '登入中...';
+
+  const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+
+  if (error) {
+    errorBox.textContent = '帳號或密碼錯誤，請重新輸入';
+    errorBox.classList.add('show');
+    btn.disabled = false;
+    btn.textContent = '登入';
+    return;
+  }
+
+  window.location.replace('index.html');
+}
+
+// Allow pressing Enter to submit
+document.getElementById('loginPassword').addEventListener('keydown', e => {
+  if (e.key === 'Enter') handleLogin();
+});
+
+// If already logged in, skip straight to the app
+(async () => {
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  if (session) window.location.replace('index.html');
+})();
+</script>
+</body>
+</html>
